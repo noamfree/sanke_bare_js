@@ -10,7 +10,7 @@ document.addEventListener("keydown", keyHandler, false);
 document.addEventListener("keyup", keyHandler, false);
 
 
-var s = new SnakeHead(new Vector(200,200));
+var s = new Snake(new Vector(200,200), 5);
 var draw = function() {
 	background(200,200,200);
 	s.draw();
@@ -20,7 +20,7 @@ var draw = function() {
 		s.velocity.rotate(0.1);
 	}
 };
-const frame_skip = 10;
+const frame_skip = 30;
 setInterval(draw,frame_skip);
 
 
