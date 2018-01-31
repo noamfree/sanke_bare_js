@@ -1,27 +1,48 @@
 var canvas = document.getElementById("myCanvas");
 var ctx = canvas.getContext("2d");
 
-var keys_pressed = {};
-keyHandler = function(e) {
-    keys_pressed[e.keyCode] = (e.type == 'keydown');
 
-};
-document.addEventListener("keydown", keyHandler, false);
-document.addEventListener("keyup", keyHandler, false);
 
+
+
+
+var RIGHT_KEY = 39;
+var LEFT_KEY = 37;
+var STEER_AMOUNT = 0.12;
+
+var f = new Food(new Vector(200,300));
 
 var s = new Snake(new Vector(200,200), 5);
 var draw = function() {
 	background(200,200,200);
 	s.draw();
 	s.move();
+	
+	f.draw();
 
-	if(keys_pressed[37]) {
-		s.velocity.rotate(0.1);
+
+	if(Vector.sub(s.head.position, f.position).mag() < SNAKE_PART_SIZE + FOOD_SIZE){
+		s.grow();
+		f = new Food(new Vector(randint(0,500), randint(0,500)));
 	}
+
+
+	if(s.touching_itself()){
+		ellipse(10,10,40,40);
+	}
+
+
+	if(keys_pressed[LEFT_KEY]) {
+		s.head.velocity.rotate(-STEER_AMOUNT);
+	}
+	if(keys_pressed[RIGHT_KEY]) {
+		s.head.velocity.rotate(STEER_AMOUNT);
+	}
+	
+
 };
-const frame_skip = 30;
-setInterval(draw,frame_skip);
+const FRAME_SKIP = 30;
+setInterval(draw,FRAME_SKIP);
 
 
 //rect(100, 100, 50, 50);

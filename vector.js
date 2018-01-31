@@ -16,6 +16,9 @@ Vector.neg = function(v) {
 Vector.mult = function(v, scalar) {
 	return v.copy().mult(scalar);
 };
+Vector.sub = function(v,u) {
+	return v.copy().sub(u);
+}
 Vector.prototype.div = function(scalar) {
 	if (scalar === 0) {
 		//TODO: raise some exceptioni
@@ -44,3 +47,12 @@ Vector.prototype.rotate = function(angle) {
 Vector.prototype.copy = function() {
 	return new Vector(this.x, this.y);
 }
+Vector.prototype.mag = function() {
+	return Math.sqrt(Math.pow(this.x, 2) + Math.pow(this.y, 2));
+};
+
+
+
+Vector.zero = function() {
+	return new Vector(0,0);
+};
