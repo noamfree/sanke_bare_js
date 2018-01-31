@@ -1,3 +1,6 @@
+
+
+
 var canvas = document.getElementById("myCanvas");
 var ctx = canvas.getContext("2d");
 
@@ -8,13 +11,16 @@ var STEER_AMOUNT = 0.12;
 
 var f = new Food(new Vector(200,300));
 
-var s = new Snake(new Vector(200,200), 5);
+var s = new Snake(new Vector(200,200), 4);
 var eating_explotions = [];
+
+
+
 
 var game_d_func = function() {
 
-
 	background(200,200,200);
+
 	s.draw();
 	s.move();
 	

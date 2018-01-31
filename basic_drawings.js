@@ -20,11 +20,31 @@ var rect = function(x,y,h,w){
 	ctx.stroke();
 };
 
+
+const line_mode_options = ["END_POINTS", "RADIUS"]
+var LINE_MODE = "END_POINTS";
+var line_mode = function(mode){
+	// TODO: raise exception if mode not in modes.
+	LINE_MODE = mode;
+};
 var line = function(x1, y1, x2, y2) {
+	if (LINE_MODE === "END_POINTS"){
 	ctx.beginPath();
 	ctx.moveTo(x1, y1);
 	ctx.lineTo(x2, y2);
 	ctx.stroke();
+	}
+	else if (LINE_MODE === "RADIUS"){
+		var line = new Vector(y2, 0);
+		line.rotate(x2);
+		x2 = x1 + line.x;
+		y2 = y1 + line.y;
+
+		ctx.beginPath();
+		ctx.moveTo(x1, y1);
+		ctx.lineTo(x2, y2);
+		ctx.stroke();
+	}
 };
 
 // center mode
@@ -41,14 +61,20 @@ var ellipse = function(x,y,w,h) {
 	ctx.stroke();  
 };
 
-
-
-var fill = function(r,g,b) {
+var color_to_text = function(r,g,b) {
 	if (r instanceof Color) {
 		var color = r;
-		ctx.fillStyle = "rgb(" +color.r+ "," +color.g+ "," +color.b+ ")";
+		r=color.r; g=color.g; b=color.b;
 	}
-	ctx.fillStyle = "rgb(" +r+ "," +g+ "," +b+ ")";
+	return "rgb(" +r+ "," +g+ "," +b+ ")";
+};
+
+var fill = function(r,g,b) {
+	ctx.fillStyle = color_to_text(r,g,b);
+};
+
+var stroke = function(r,g,b) {
+	ctx.strokeStyle = color_to_text(r,g,b);
 };
 
 var background = function(r,g,b) {

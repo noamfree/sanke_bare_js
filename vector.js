@@ -50,6 +50,9 @@ Vector.prototype.copy = function() {
 Vector.prototype.mag = function() {
 	return Math.sqrt(Math.pow(this.x, 2) + Math.pow(this.y, 2));
 };
+Vector.prototype.angle = function() {
+	return Math.atan2(this.y, this.x);
+};
 
 
 
