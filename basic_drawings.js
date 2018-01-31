@@ -20,6 +20,13 @@ var rect = function(x,y,h,w){
 	ctx.stroke();
 };
 
+var line = function(x1, y1, x2, y2) {
+	ctx.beginPath();
+	ctx.moveTo(x1, y1);
+	ctx.lineTo(x2, y2);
+	ctx.stroke();
+};
+
 // center mode
 var ellipse = function(x,y,w,h) {
 	ctx.save();

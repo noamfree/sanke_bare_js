@@ -12,12 +12,13 @@ var s = new Snake(new Vector(200,200), 5);
 var eating_explotions = [];
 
 var game_d_func = function() {
+
+
 	background(200,200,200);
 	s.draw();
 	s.move();
 	
 	f.draw();
-
 
 	for (var i=eating_explotions.length-1; i>=0; i--) {
 		var h=eating_explotions[i];

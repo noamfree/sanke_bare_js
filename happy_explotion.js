@@ -27,6 +27,7 @@ var HappyExplotion = function(position){
 };
 HappyExplotion.prototype.draw = function() {
     ctx.save();
+    ctx.lineWidth = 0.001;
     for (var i=0; i< this.particles.length; i++) {
         ctx.globalAlpha =  this.life / this.max_life;
         this.particles[i].draw();
