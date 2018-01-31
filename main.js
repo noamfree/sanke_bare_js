@@ -2,10 +2,6 @@ var canvas = document.getElementById("myCanvas");
 var ctx = canvas.getContext("2d");
 
 
-
-
-
-
 var RIGHT_KEY = 39;
 var LEFT_KEY = 37;
 var STEER_AMOUNT = 0.12;
@@ -13,7 +9,9 @@ var STEER_AMOUNT = 0.12;
 var f = new Food(new Vector(200,300));
 
 var s = new Snake(new Vector(200,200), 5);
-var draw = function() {
+var eating_explotions = [];
+
+var game_d_func = function() {
 	background(200,200,200);
 	s.draw();
 	s.move();
@@ -21,9 +19,20 @@ var draw = function() {
 	f.draw();
 
 
+	for (var i=eating_explotions.length-1; i>=0; i--) {
+		var h=eating_explotions[i];
+		h.draw();
+		h.move();
+		if(!h.is_alive()){
+			eating_explotions.splice(i, 1);
+		}
+	}
+
+
 	if(Vector.sub(s.head.position, f.position).mag() < SNAKE_PART_SIZE + FOOD_SIZE){
 		s.grow();
 		f = new Food(new Vector(randint(0,500), randint(0,500)));
+		eating_explotions.push(new HappyExplotion(s.head.position));
 	}
 
 
@@ -38,9 +47,17 @@ var draw = function() {
 	if(keys_pressed[RIGHT_KEY]) {
 		s.head.velocity.rotate(STEER_AMOUNT);
 	}
-	
-
 };
+var game_scene = new Scene(game_d_func);
+var current_scene = game_scene;
+
+
+
+
+var draw = function() {
+	current_scene.draw();
+};
+
 const FRAME_SKIP = 30;
 setInterval(draw,FRAME_SKIP);
 

@@ -1,3 +1,16 @@
+var Color = function(r,g,b) {
+    this.r = r;
+    this.g = g;
+    this.b = b;
+};
+var color = function(r,g,b){
+    return new Color(r,g,b)
+};
+var random_color = function() {
+    return color(randint(0,255), randint(0,255), randint(0,255));
+};
+
+
 // corner mode
 var rect = function(x,y,h,w){
 	ctx.beginPath();
@@ -21,7 +34,13 @@ var ellipse = function(x,y,w,h) {
 	ctx.stroke();  
 };
 
+
+
 var fill = function(r,g,b) {
+	if (r instanceof Color) {
+		var color = r;
+		ctx.fillStyle = "rgb(" +color.r+ "," +color.g+ "," +color.b+ ")";
+	}
 	ctx.fillStyle = "rgb(" +r+ "," +g+ "," +b+ ")";
 };
 
