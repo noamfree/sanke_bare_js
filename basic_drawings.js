@@ -12,12 +12,35 @@ var random_color = function() {
 
 
 // corner mode
-var rect = function(x,y,h,w){
-	ctx.beginPath();
-	ctx.rect(x,y,h,w);
-	ctx.closePath();
-	ctx.fill();
-	ctx.stroke();
+var rect = function(x,y,w,h,r){
+	if (r === undefined) {
+		ctx.beginPath();
+		ctx.rect(x,y,w,h);
+		ctx.closePath();
+		ctx.fill();
+		ctx.stroke();
+	}
+	else
+	{
+		// althogh this makes some interesting shapes (try rect(400,400,100,100,100);!!), we should'nt use this with r > min(h,w)/2
+		r= Math.min(w,h)/2;
+		// maybe we should do something else.
+
+		ctx.beginPath();
+		ctx.moveTo(x+r, y);
+		ctx.lineTo(x+w-r,y);
+		ctx.arc(x+w-r,y+r,r,Math.PI*1.5,Math.PI*2);
+		ctx.lineTo(x+w,y+h-r);
+		ctx.arc(x+w-r,y+h-r,r,0,Math.PI/2);
+		ctx.lineTo(x+r, y+h);
+		ctx.arc(x+r,y+h-r,r,Math.PI*0.5,Math.PI);
+		ctx.lineTo(x, y+r);
+		ctx.arc(x+r,y+r,r,Math.PI,Math.PI*1.5);
+
+
+		ctx.fill();
+		ctx.stroke();
+	}
 };
 
 

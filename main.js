@@ -14,13 +14,14 @@ var f = new Food(new Vector(200,300));
 var s = new Snake(new Vector(200,200), 4);
 var eating_explotions = [];
 
-
-
+var combo_bar = new ProgressBar();
+var combo_bar_position = new Vector(50,550);
 
 var game_d_func = function() {
-
 	background(200,200,200);
 
+	combo_bar.draw(combo_bar_position, 300);
+	combo_bar.empty(1);
 	s.draw();
 	s.move();
 	
@@ -40,6 +41,7 @@ var game_d_func = function() {
 		s.grow();
 		f = new Food(new Vector(randint(0,500), randint(0,500)));
 		eating_explotions.push(new HappyExplotion(s.head.position));
+		combo_bar.fill();
 	}
 
 
