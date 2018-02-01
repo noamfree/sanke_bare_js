@@ -23,8 +23,22 @@ var rect = function(x,y,w,h,r){
 	else
 	{
 		// althogh this makes some interesting shapes (try rect(400,400,100,100,100);!!), we should'nt use this with r > min(h,w)/2
-		r= Math.min(w,h)/2;
-		// maybe we should do something else.
+
+		// first approach is to set r = Math.min(w,h)/2. does problems when w || h <=0
+
+		//if the rect is to small for such a radius, draw a bigger one, and scale it.
+		var sx = Math.min(w/(2*r), 1);
+		var sy = Math.min(h/(2*r), 1);
+		// we can refactor, if 2r<w, &&2r<h or if r<0, use ellipse. 
+
+		h = h/sy;
+		w = w/sx;
+		x = x/sx;
+		y = y/sy;
+
+		ctx.save();
+		ctx.scale(sx, sy);
+		var rad = Math.abs(r);
 
 		ctx.beginPath();
 		ctx.moveTo(x+r, y);
@@ -38,6 +52,7 @@ var rect = function(x,y,w,h,r){
 		ctx.arc(x+r,y+r,r,Math.PI,Math.PI*1.5);
 
 
+		ctx.restore();
 		ctx.fill();
 		ctx.stroke();
 	}
@@ -76,7 +91,7 @@ var ellipse = function(x,y,w,h) {
 	
 	ctx.scale(1,  h/w);
 	ctx.beginPath();
-	ctx.arc(x, y, w, 0, 2 * Math.PI);
+	ctx.arc(x, y/(h/w), w, 0, 2 * Math.PI);
 
 	ctx.restore();
 

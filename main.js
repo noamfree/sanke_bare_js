@@ -60,11 +60,9 @@ var game_d_func = function() {
 var game_scene = new Scene(game_d_func);
 var current_scene = game_scene;
 
-
-
-
 var draw = function() {
 	current_scene.draw();
+
 };
 
 const FRAME_SKIP = 30;

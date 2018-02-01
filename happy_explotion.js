@@ -46,4 +46,4 @@ HappyExplotion.prototype.move = function() {
 };
 HappyExplotion.prototype.is_alive = function() {
     return this.life > 0;
-}
+};
