@@ -59,3 +59,7 @@ Vector.prototype.angle = function() {
 Vector.zero = function() {
 	return new Vector(0,0);
 };
+
+var vector = function(x,y) {
+	return new Vector(x,y);
+};

@@ -1,14 +1,4 @@
-var Color = function(r,g,b) {
-    this.r = r;
-    this.g = g;
-    this.b = b;
-};
-var color = function(r,g,b){
-    return new Color(r,g,b)
-};
-var random_color = function() {
-    return color(randint(0,255), randint(0,255), randint(0,255));
-};
+
 
 
 // corner mode
@@ -99,13 +89,20 @@ var ellipse = function(x,y,w,h) {
 	ctx.stroke();  
 };
 
-var color_to_text = function(r,g,b) {
-	if (r instanceof Color) {
-		var color = r;
-		r=color.r; g=color.g; b=color.b;
+var polygon = function(point_list) {
+	ctx.beginPath();
+	ctx.moveTo(point_list[0].x, point_list[0].y);
+	for (var i=1; i< point_list.length; i++) {
+		var p = point_list[i];
+		ctx.lineTo(p.x, p.y);
 	}
-	return "rgb(" +r+ "," +g+ "," +b+ ")";
+	ctx.closePath();
+
+	ctx.fill();
+	ctx.stroke();  
 };
+
+
 
 var fill = function(r,g,b) {
 	ctx.fillStyle = color_to_text(r,g,b);
@@ -115,12 +112,14 @@ var stroke = function(r,g,b) {
 	ctx.strokeStyle = color_to_text(r,g,b);
 };
 
+var background_color=color(255,255,255);
 var background = function(r,g,b) {
+	background_color = color(r,g,b);
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
 	ctx.save();
-	
-	fill(r,g,b);
+	fill(background_color);
 	rect(0, 0, canvas.width, canvas.height);
 	
 	ctx.restore();
 };
+

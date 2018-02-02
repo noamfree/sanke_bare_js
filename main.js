@@ -9,15 +9,26 @@ var RIGHT_KEY = 39;
 var LEFT_KEY = 37;
 var STEER_AMOUNT = 0.12;
 
-var f = new Food(new Vector(200,300));
+var f;
+var s;
+var eating_explotions;
+var combo_bar ;
+var combo_bar_position;
 
-var s = new Snake(new Vector(200,200), 4);
-var eating_explotions = [];
+var init_game = function() {
+	f = new Food(new Vector(200,300));
 
-var combo_bar = new ProgressBar();
-var combo_bar_position = new Vector(50,550);
+	s = new Snake(new Vector(200,200), 4);
+	eating_explotions = [];
+
+	combo_bar = new ProgressBar();
+	combo_bar_position = new Vector(50,550);
+
+};
+init_game();
 
 var game_d_func = function() {
+	
 	background(200,200,200);
 
 	combo_bar.draw(combo_bar_position, 300);
@@ -52,13 +63,16 @@ var game_d_func = function() {
 
 	if(keys_pressed[LEFT_KEY]) {
 		s.head.velocity.rotate(-STEER_AMOUNT);
+		arrow(-1);
 	}
 	if(keys_pressed[RIGHT_KEY]) {
 		s.head.velocity.rotate(STEER_AMOUNT);
+		arrow(1);
 	}
 };
 var game_scene = new Scene(game_d_func);
 var current_scene = game_scene;
+
 
 var draw = function() {
 	current_scene.draw();
