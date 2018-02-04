@@ -4,7 +4,7 @@
 // corner mode
 var rect = function(x,y,w,h,r){
 	if (r === undefined) {
-		ctx.beginPath();
+		s_ctx.beginPath();
 		ctx.rect(x,y,w,h);
 		ctx.closePath();
 		ctx.fill();
@@ -30,7 +30,7 @@ var rect = function(x,y,w,h,r){
 		ctx.scale(sx, sy);
 		var rad = Math.abs(r);
 
-		ctx.beginPath();
+		s_ctx.beginPath();
 		ctx.moveTo(x+r, y);
 		ctx.lineTo(x+w-r,y);
 		ctx.arc(x+w-r,y+r,r,Math.PI*1.5,Math.PI*2);
@@ -57,7 +57,7 @@ var line_mode = function(mode){
 };
 var line = function(x1, y1, x2, y2) {
 	if (LINE_MODE === "END_POINTS"){
-	ctx.beginPath();
+	s_ctx.beginPath();
 	ctx.moveTo(x1, y1);
 	ctx.lineTo(x2, y2);
 	ctx.stroke();
@@ -68,7 +68,7 @@ var line = function(x1, y1, x2, y2) {
 		x2 = x1 + line.x;
 		y2 = y1 + line.y;
 
-		ctx.beginPath();
+		s_ctx.beginPath();
 		ctx.moveTo(x1, y1);
 		ctx.lineTo(x2, y2);
 		ctx.stroke();
@@ -80,7 +80,7 @@ var ellipse = function(x,y,w,h) {
 	ctx.save();
 	
 	ctx.scale(1,  h/w);
-	ctx.beginPath();
+	s_ctx.beginPath();
 	ctx.arc(x, y/(h/w), w, 0, 2 * Math.PI);
 
 	ctx.restore();
@@ -90,10 +90,11 @@ var ellipse = function(x,y,w,h) {
 };
 
 var polygon = function(point_list) {
-	ctx.beginPath();
+	s_ctx.beginPath();
 	ctx.moveTo(point_list[0].x, point_list[0].y);
 	for (var i=1; i< point_list.length; i++) {
 		var p = point_list[i];
+		// todo: this should probably get (x,y) tuples. instead of vectors. this file should now about vectors??
 		ctx.lineTo(p.x, p.y);
 	}
 	ctx.closePath();

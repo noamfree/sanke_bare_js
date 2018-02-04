@@ -3,6 +3,12 @@
 
 var canvas = document.getElementById("myCanvas");
 var ctx = canvas.getContext("2d");
+var my_context_stack = [ctx];
+s_ctx = my_context_stack[my_context_stack.length-1];
+var pushContext = function(con) {
+	my_context_stack.push(con);
+	s_ctx = my_context_stack[my_context_stack.length-1];
+};
 
 
 var RIGHT_KEY = 39;
@@ -63,11 +69,11 @@ var game_d_func = function() {
 
 	if(keys_pressed[LEFT_KEY]) {
 		s.head.velocity.rotate(-STEER_AMOUNT);
-		arrow(-1);
+		arrow(directions.left, 150,400, 60, 30);
 	}
 	if(keys_pressed[RIGHT_KEY]) {
 		s.head.velocity.rotate(STEER_AMOUNT);
-		arrow(1);
+		arrow(directions.right, 150,400, 60, 30);
 	}
 };
 var game_scene = new Scene(game_d_func);
@@ -80,7 +86,12 @@ var draw = function() {
 };
 
 const FRAME_SKIP = 30;
-setInterval(draw,FRAME_SKIP);
+//setInterval(draw,FRAME_SKIP);
+
+var panel = new Panel(ctx, 100,100,200,200);
+pushContext(panel);
+background(200,200,200);
+rect(5,5,60,60);
 
 
 //rect(100, 100, 50, 50);
