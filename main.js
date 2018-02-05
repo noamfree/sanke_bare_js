@@ -3,11 +3,18 @@
 
 var canvas = document.getElementById("myCanvas");
 var ctx = canvas.getContext("2d");
-var my_context_stack = [ctx];
-s_ctx = my_context_stack[my_context_stack.length-1];
-var pushContext = function(con) {
-	my_context_stack.push(con);
-	s_ctx = my_context_stack[my_context_stack.length-1];
+const width = canvas.width;
+const height = canvas.height;
+
+var my_drawers_stack = [drawer];
+s_drawer = my_drawers_stack[my_drawers_stack.length-1];
+var pushDrawer = function(con) {
+	my_drawers_stack.push(con);
+	s_drawer = my_drawers_stack[my_drawers_stack.length-1];
+};
+var popDrawer = function() {
+	my_drawers_stack.pop();
+	s_drawer = my_drawers_stack[my_drawers_stack.length-1];
 };
 
 
@@ -33,12 +40,14 @@ var init_game = function() {
 };
 init_game();
 
+
 var game_d_func = function() {
 	
 	background(200,200,200);
 
 	combo_bar.draw(combo_bar_position, 300);
 	combo_bar.empty(1);
+
 	s.draw();
 	s.move();
 	
@@ -66,15 +75,20 @@ var game_d_func = function() {
 		ellipse(10,10,40,40);
 	}
 
-
+	no_fill();
 	if(keys_pressed[LEFT_KEY]) {
 		s.head.velocity.rotate(-STEER_AMOUNT);
-		arrow(directions.left, 150,400, 60, 30);
+		fill(50,255,80);
 	}
+	arrow(directions.left, 500,height-50, 60, 30);
+
+	no_fill();
 	if(keys_pressed[RIGHT_KEY]) {
 		s.head.velocity.rotate(STEER_AMOUNT);
-		arrow(directions.right, 150,400, 60, 30);
+		fill(50,255,80);
 	}
+	arrow(directions.right, 500,height-50, 60, 30);
+
 };
 var game_scene = new Scene(game_d_func);
 var current_scene = game_scene;
@@ -86,24 +100,35 @@ var draw = function() {
 };
 
 const FRAME_SKIP = 30;
-//setInterval(draw,FRAME_SKIP);
+setInterval(draw,FRAME_SKIP);
 
-var panel = new Panel(ctx, 100,100,200,200);
-pushContext(panel);
-background(200,200,200);
-rect(5,5,60,60);
+
+
+// background(200,0,0);
+// rect(0,0, 100, 100);
+// var panel = new Panel(drawer, 100,100, 500,500);
+// pushContext(panel);
+// background(200,200,0 );
+// fill(255,0,0);
+// rect(-5,-5,100,100);
+// pushContext(new Panel(panel, 100,100,100,100));
+// background(100,100,0);
+
+// rect(-5,-5,60,40);
+
+
+
+// fill(50,255,50);
+// ellipse(0,0,20,10);
+// ellipse(10,100,20,10);
+// ellipse(0,100,20,10);
 
 
 //rect(100, 100, 50, 50);
 //
 //ellipse(200,200,50, 50);
 
-//ctx.beginPath();
-//ctx.arc(240, 160, 20, 0, Math.PI*1.5, false);
-//ctx.fillStyle = "green";
-//ctx.fill();
-//ctx.closePath();
-//
+
 //ctx.beginPath();
 //ctx.rect(160, 10, 100, 40);
 //ctx.strokeStyle = "rgba(0, 0, 255, 0.5)";

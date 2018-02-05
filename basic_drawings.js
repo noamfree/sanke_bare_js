@@ -1,14 +1,31 @@
+var is_fill = true;
+
+var drawing_decorator = function(f) {
+	var wrapper = function() {
+		s_drawer.pre_shape();
+		f.apply(null, arguments);
+		if (is_fill) {ctx.fill();}
+		
+		ctx.stroke();
+		s_drawer.post_shape();
+	}
+
+	return wrapper;
+}
 
 
+drawer = {pre_shape: function() {
+	ctx.beginPath();
+},
+
+post_shape : function() {
+}};
 
 // corner mode
-var rect = function(x,y,w,h,r){
+var rect = drawing_decorator(function(x,y,w,h,r){
 	if (r === undefined) {
-		s_ctx.beginPath();
 		ctx.rect(x,y,w,h);
 		ctx.closePath();
-		ctx.fill();
-		ctx.stroke();
 	}
 	else
 	{
@@ -25,12 +42,12 @@ var rect = function(x,y,w,h,r){
 		w = w/sx;
 		x = x/sx;
 		y = y/sy;
+		
+		var rad = Math.abs(r);
 
 		ctx.save();
 		ctx.scale(sx, sy);
-		var rad = Math.abs(r);
 
-		s_ctx.beginPath();
 		ctx.moveTo(x+r, y);
 		ctx.lineTo(x+w-r,y);
 		ctx.arc(x+w-r,y+r,r,Math.PI*1.5,Math.PI*2);
@@ -41,12 +58,10 @@ var rect = function(x,y,w,h,r){
 		ctx.lineTo(x, y+r);
 		ctx.arc(x+r,y+r,r,Math.PI,Math.PI*1.5);
 
-
 		ctx.restore();
-		ctx.fill();
-		ctx.stroke();
+
 	}
-};
+});
 
 
 const line_mode_options = ["END_POINTS", "RADIUS"]
@@ -57,7 +72,7 @@ var line_mode = function(mode){
 };
 var line = function(x1, y1, x2, y2) {
 	if (LINE_MODE === "END_POINTS"){
-	s_ctx.beginPath();
+		s_drawer.pre_shape();
 	ctx.moveTo(x1, y1);
 	ctx.lineTo(x2, y2);
 	ctx.stroke();
@@ -68,7 +83,7 @@ var line = function(x1, y1, x2, y2) {
 		x2 = x1 + line.x;
 		y2 = y1 + line.y;
 
-		s_ctx.beginPath();
+		s_drawer.pre_shape();
 		ctx.moveTo(x1, y1);
 		ctx.lineTo(x2, y2);
 		ctx.stroke();
@@ -76,21 +91,18 @@ var line = function(x1, y1, x2, y2) {
 };
 
 // center mode
-var ellipse = function(x,y,w,h) {
+var ellipse = drawing_decorator(function(x,y,w,h) {
+
 	ctx.save();
 	
 	ctx.scale(1,  h/w);
-	s_ctx.beginPath();
 	ctx.arc(x, y/(h/w), w, 0, 2 * Math.PI);
-
+	
 	ctx.restore();
 
-	ctx.fill();
-	ctx.stroke();  
-};
+});
 
-var polygon = function(point_list) {
-	s_ctx.beginPath();
+var polygon = drawing_decorator(function(point_list) {
 	ctx.moveTo(point_list[0].x, point_list[0].y);
 	for (var i=1; i< point_list.length; i++) {
 		var p = point_list[i];
@@ -98,16 +110,16 @@ var polygon = function(point_list) {
 		ctx.lineTo(p.x, p.y);
 	}
 	ctx.closePath();
-
-	ctx.fill();
-	ctx.stroke();  
-};
+});
 
 
 
 var fill = function(r,g,b) {
 	ctx.fillStyle = color_to_text(r,g,b);
+	is_fill = true;
 };
+
+var no_fill = function() {is_fill = false;};
 
 var stroke = function(r,g,b) {
 	ctx.strokeStyle = color_to_text(r,g,b);
@@ -116,11 +128,10 @@ var stroke = function(r,g,b) {
 var background_color=color(255,255,255);
 var background = function(r,g,b) {
 	background_color = color(r,g,b);
-	ctx.clearRect(0, 0, canvas.width, canvas.height);
+	//ctx.clearRect(0, 0, canvas.width, canvas.height);
 	ctx.save();
 	fill(background_color);
 	rect(0, 0, canvas.width, canvas.height);
-	
 	ctx.restore();
 };
 

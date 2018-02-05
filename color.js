@@ -7,7 +7,7 @@ var HSLColor = function(h,s,l) {
 };
 HSLColor.prototype = Object.create(Color);
 HSLColor.prototype.toString = function() {
-    return "hsl(" +  this.h, +"," + this.s +"%," +this.l +"%)";
+    return "hsl(" +  this.h*360 +"," + this.s*100 +"%," +this.l*100 +"%)";
 };
 
 var RGBColor = function(r,g,b) {
@@ -19,6 +19,9 @@ RGBColor.prototype = Object.create(Color);
 RGBColor.prototype.toString = function() {
     return "rgb(" +  this.r +"," + this.g +"," +this.b +")";
 };
+RGBColor.prototype.copy = function() {
+	return new RGBColor(this.r, this.g, this.b);
+};
 
 var color = function(r,g,b){
 	if (r instanceof RGBColor) {return r;}
@@ -27,34 +30,15 @@ var color = function(r,g,b){
 var random_color = function() {
     return color(randint(0,255), randint(0,255), randint(0,255));
 };
-RGBColor.prototype.mix = function(other) {
-	this.r = (this.r + other.r)/2;
-	this.g = (this.g + other.g)/2;
-	this.b = (this.b + other.b)/2;
-	return this;
-};
-RGBColor.prototype.complement = function() {
-	// TODO:255 or 256?
-	this.r = 255 - this.r;
-	this.g = 255 - this.g;
-	this.b = 255 - this.	b;
-	return this;
-};
-RGBColor.prototype.contrast = function(other) {
-	this.mix(other.complement());
-	return this;
-};
-RGBColor.mix = function(c,d) {
-	return c.copy().mix(d);
-};
-RGBColor.prototype.copy = function() {
-	return new RGBColor(this.r, this.g, this.b);
-};
-RGBColor.prototype.how_contrast = function(other) {
-    1/0;
-}
 
 
+
+/**
+ * 
+ * @param {float} h - from 0 to 1 
+ * @param {*} s 
+ * @param {*} l 
+ */
 function hslToRgb(h, s, l){
     var r, g, b;
 
@@ -79,10 +63,13 @@ function hslToRgb(h, s, l){
 
     return new RGBColor(Math.round(r * 255), Math.round(g * 255), Math.round(b * 255));
 }
-function strong_hue(h) {
-	return hslToRgb(h, 1,0.5);
-}
+HSLColor.prototype.to_rgb = function() {
+    return hslToRgb(this.h, this.s, this.l);
+};
 
+var strong_hue_color = function(h) {
+    return new HSLColor(h,1,0.5);
+};
 
 
 var color_to_text = function(r,g,b) {
