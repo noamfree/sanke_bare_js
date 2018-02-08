@@ -1,25 +1,3 @@
-
-
-
-var canvas = document.getElementById("myCanvas");
-var ctx = canvas.getContext("2d");
-const width = canvas.width;
-const height = canvas.height;
-
-var my_drawers_stack = [drawer];
-s_drawer = my_drawers_stack[my_drawers_stack.length-1];
-var pushDrawer = function(con) {
-	my_drawers_stack.push(con);
-	s_drawer = my_drawers_stack[my_drawers_stack.length-1];
-};
-var popDrawer = function() {
-	my_drawers_stack.pop();
-	s_drawer = my_drawers_stack[my_drawers_stack.length-1];
-};
-
-
-var RIGHT_KEY = 39;
-var LEFT_KEY = 37;
 var STEER_AMOUNT = 0.12;
 
 var f;
@@ -29,17 +7,33 @@ var combo_bar ;
 var combo_bar_position;
 
 var init_game = function() {
-	f = new Food(new Vector(200,300));
+	f = new Food(new Vector(300,200));
 
 	s = new Snake(new Vector(200,200), 4);
 	eating_explotions = [];
 
 	combo_bar = new ProgressBar();
 	combo_bar_position = new Vector(50,550);
-
+	use_key(LEFT_KEY);
+	use_key(RIGHT_KEY);
 };
 init_game();
 
+
+var draw_left_arrow = function() {
+	if(keys_pressed[LEFT_KEY]){
+		fill(50,255,80);
+	}
+	else {no_fill();}
+	arrow(directions.left, 500,height-50, 60, 30);
+};
+var draw_right_arrow = function() {
+	if(keys_pressed[RIGHT_KEY]){
+		fill(50,255,80);
+	}
+	else {no_fill();}
+	arrow(directions.right, 500,height-50, 60, 30);
+};
 
 var game_d_func = function() {
 	
@@ -75,16 +69,16 @@ var game_d_func = function() {
 		ellipse(10,10,40,40);
 	}
 
+	s.head.velocity.rotate(STEER_AMOUNT * (keys_pressed[RIGHT_KEY] - keys_pressed[LEFT_KEY]));
+
 	no_fill();
-	if(keys_pressed[LEFT_KEY]) {
-		s.head.velocity.rotate(-STEER_AMOUNT);
-		fill(50,255,80);
+	if(keys_pressed[LEFT_KEY]) {	
+		fill(50,255,80);	
 	}
 	arrow(directions.left, 500,height-50, 60, 30);
 
 	no_fill();
 	if(keys_pressed[RIGHT_KEY]) {
-		s.head.velocity.rotate(STEER_AMOUNT);
 		fill(50,255,80);
 	}
 	arrow(directions.right, 500,height-50, 60, 30);
@@ -93,7 +87,6 @@ var game_d_func = function() {
 var game_scene = new Scene(game_d_func);
 var current_scene = game_scene;
 
-
 var draw = function() {
 	current_scene.draw();
 
@@ -101,32 +94,6 @@ var draw = function() {
 
 const FRAME_SKIP = 30;
 setInterval(draw,FRAME_SKIP);
-
-
-
-// background(200,0,0);
-// rect(0,0, 100, 100);
-// var panel = new Panel(drawer, 100,100, 500,500);
-// pushContext(panel);
-// background(200,200,0 );
-// fill(255,0,0);
-// rect(-5,-5,100,100);
-// pushContext(new Panel(panel, 100,100,100,100));
-// background(100,100,0);
-
-// rect(-5,-5,60,40);
-
-
-
-// fill(50,255,50);
-// ellipse(0,0,20,10);
-// ellipse(10,100,20,10);
-// ellipse(0,100,20,10);
-
-
-//rect(100, 100, 50, 50);
-//
-//ellipse(200,200,50, 50);
 
 
 //ctx.beginPath();

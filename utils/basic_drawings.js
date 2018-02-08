@@ -131,6 +131,7 @@ var background = function(r,g,b) {
 	//ctx.clearRect(0, 0, canvas.width, canvas.height);
 	ctx.save();
 	fill(background_color);
+	// TODO: what if we applied a transformation??
 	rect(0, 0, canvas.width, canvas.height);
 	ctx.restore();
 };

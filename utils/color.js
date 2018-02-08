@@ -6,6 +6,10 @@ var HSLColor = function(h,s,l) {
     this.l = l;
 };
 HSLColor.prototype = Object.create(Color);
+HSLColor.prototype.complement = function() {
+    return new HSLColor((this.h + 0.5) %  1.0, this.s, this.l);
+};
+
 HSLColor.prototype.toString = function() {
     return "hsl(" +  this.h*360 +"," + this.s*100 +"%," +this.l*100 +"%)";
 };
@@ -24,7 +28,7 @@ RGBColor.prototype.copy = function() {
 };
 
 var color = function(r,g,b){
-	if (r instanceof RGBColor) {return r;}
+	if (r.prototype === Color.prototype) {return r;}
     return new RGBColor(r,g,b)
 };
 var random_color = function() {
