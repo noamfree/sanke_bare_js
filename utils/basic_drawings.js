@@ -102,6 +102,10 @@ var ellipse = drawing_decorator(function(x,y,w,h) {
 
 });
 
+var text = function(text, x,y) {
+	ctx.fillText(text, x, y);
+}
+
 var polygon = drawing_decorator(function(point_list) {
 	ctx.moveTo(point_list[0].x, point_list[0].y);
 	for (var i=1; i< point_list.length; i++) {

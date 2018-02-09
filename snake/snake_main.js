@@ -71,17 +71,8 @@ var game_d_func = function() {
 
 	s.head.velocity.rotate(STEER_AMOUNT * (keys_pressed[RIGHT_KEY] - keys_pressed[LEFT_KEY]));
 
-	no_fill();
-	if(keys_pressed[LEFT_KEY]) {	
-		fill(50,255,80);	
-	}
-	arrow(directions.left, 500,height-50, 60, 30);
-
-	no_fill();
-	if(keys_pressed[RIGHT_KEY]) {
-		fill(50,255,80);
-	}
-	arrow(directions.right, 500,height-50, 60, 30);
+	draw_left_arrow();
+	draw_right_arrow();
 
 };
 var game_scene = new Scene(game_d_func);
