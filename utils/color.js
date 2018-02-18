@@ -27,13 +27,25 @@ RGBColor.prototype.copy = function() {
 	return new RGBColor(this.r, this.g, this.b);
 };
 
-var color = function(r,g,b){
-	if (r.prototype === Color.prototype) {return r;}
+var RGBAColor = function(r,g,b,a) {
+    RGBColor.call(this, r,g,b);
+    this.a = a;
+};
+RGBAColor.prototype = Object.create(Color)
+RGBAColor.prototype.toString = function() {
+    return "rgba(" +  this.r +"," + this.g +"," +this.b + "," + this.a +")";
+};
+
+var color = function(r,g,b,a){
+    if (r.prototype === Color.prototype) {return r;}
+    if (g === undefined) {return new RGBColor(r,r,r);}
+    if (a !== undefined) {return new RGBAColor(r,g,b,a);}
     return new RGBColor(r,g,b)
 };
 var random_color = function() {
     return color(randint(0,255), randint(0,255), randint(0,255));
 };
+
 
 
 
@@ -76,9 +88,9 @@ var strong_hue_color = function(h) {
 };
 
 
-var color_to_text = function(r,g,b) {
+var color_to_text = function(r,g,b,a) {
 	if (r.prototype === Color.prototype) {
 		return r.toString();
-	}
-	return "rgb(" +r+ "," +g+ "," +b+ ")";
+    }
+	return new color(r,g,b,a).toString();
 };

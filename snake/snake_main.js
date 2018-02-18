@@ -1,4 +1,5 @@
 var STEER_AMOUNT = 0.12;
+var SNAKE_INIT_SIZE = 9;
 
 var f;
 var s;
@@ -6,14 +7,17 @@ var eating_explotions;
 var combo_bar ;
 var combo_bar_position;
 
+var game_over_scene = new StaticScene(function(){
+	background(100,100,100,0.3);
+});
 var init_game = function() {
 	f = new Food(new Vector(300,200));
 
-	s = new Snake(new Vector(200,200), 4);
+	s = new Snake(new Vector(200,200), SNAKE_INIT_SIZE);
 	eating_explotions = [];
 
 	combo_bar = new ProgressBar();
-	combo_bar_position = new Vector(50,550);
+	combo_bar_position = new Vector(50,560);
 	use_key(LEFT_KEY);
 	use_key(RIGHT_KEY);
 };
@@ -37,7 +41,11 @@ var draw_right_arrow = function() {
 
 var game_d_func = function() {
 	
-	background(200,200,200);
+	background(170);
+	fill(200,200,200);
+	no_stroke();
+	rect(50,50,width-50*2, height-50*2);
+	stroke();
 
 	combo_bar.draw(combo_bar_position, 300);
 	combo_bar.empty(1);
@@ -64,9 +72,8 @@ var game_d_func = function() {
 		combo_bar.fill();
 	}
 
-
-	if(s.touching_itself()){
-		ellipse(10,10,40,40);
+	if(s.touching_itself() && frame_count > 10){
+		current_scene = game_over_scene;
 	}
 
 	s.head.velocity.rotate(STEER_AMOUNT * (keys_pressed[RIGHT_KEY] - keys_pressed[LEFT_KEY]));
@@ -78,9 +85,10 @@ var game_d_func = function() {
 var game_scene = new Scene(game_d_func);
 var current_scene = game_scene;
 
+var frame_count =0;
 var draw = function() {
+	frame_count++;
 	current_scene.draw();
-
 };
 
 const FRAME_SKIP = 30;

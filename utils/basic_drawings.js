@@ -1,13 +1,14 @@
 var is_fill = true;
+var is_stroke = true;
 
 var drawing_decorator = function(f) {
 	var wrapper = function() {
-		s_drawer.pre_shape();
+		drawer.pre_shape();
 		f.apply(null, arguments);
 		if (is_fill) {ctx.fill();}
 		
-		ctx.stroke();
-		s_drawer.post_shape();
+		if (is_stroke) {ctx.stroke();}
+		drawer.post_shape();
 	}
 
 	return wrapper;
@@ -70,7 +71,7 @@ var line_mode = function(mode){
 	// TODO: raise exception if mode not in modes.
 	LINE_MODE = mode;
 };
-var line = function(x1, y1, x2, y2) {
+var line = drawing_decorator(function(x1, y1, x2, y2) {
 	if (LINE_MODE === "END_POINTS"){
 		s_drawer.pre_shape();
 	ctx.moveTo(x1, y1);
@@ -83,12 +84,10 @@ var line = function(x1, y1, x2, y2) {
 		x2 = x1 + line.x;
 		y2 = y1 + line.y;
 
-		s_drawer.pre_shape();
 		ctx.moveTo(x1, y1);
 		ctx.lineTo(x2, y2);
-		ctx.stroke();
 	}
-};
+});
 
 // center mode
 var ellipse = drawing_decorator(function(x,y,w,h) {
@@ -118,20 +117,23 @@ var polygon = drawing_decorator(function(point_list) {
 
 
 
-var fill = function(r,g,b) {
-	ctx.fillStyle = color_to_text(r,g,b);
+var fill = function(r,g,b,a) {
+	ctx.fillStyle = color_to_text(r,g,b,a);
 	is_fill = true;
 };
 
 var no_fill = function() {is_fill = false;};
 
 var stroke = function(r,g,b) {
+	if (r === undefined) {r=0;}
 	ctx.strokeStyle = color_to_text(r,g,b);
+	is_stroke= true;
 };
+var no_stroke = function() {is_stroke = false;};
 
 var background_color=color(255,255,255);
-var background = function(r,g,b) {
-	background_color = color(r,g,b);
+var background = function(r,g,b,a) {
+	background_color = color(r,g,b,a);
 	//ctx.clearRect(0, 0, canvas.width, canvas.height);
 	ctx.save();
 	fill(background_color);
@@ -139,4 +141,7 @@ var background = function(r,g,b) {
 	rect(0, 0, canvas.width, canvas.height);
 	ctx.restore();
 };
+
+
+
 

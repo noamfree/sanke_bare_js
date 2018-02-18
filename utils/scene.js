@@ -10,7 +10,8 @@ Scene.prototype.draw = function() {
 
 var StaticScene = function(d_func) {
 	Scene.call(this, d_func);
-	this.reset();
+	this.drawen = false;
+	//this.reset();
 };
 StaticScene.parent = Scene;
 StaticScene.prototype = Object.create(StaticScene.parent.prototype);
